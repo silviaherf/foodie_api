@@ -8,6 +8,9 @@ import src.data_extraction as extract
 import json
 from bson.json_util import dumps
 import base64
+import branca
+
+
 
 
 app = Flask("foodie")
@@ -17,14 +20,14 @@ app = Flask("foodie")
     #This is just the first view of the API
    
 def saludo():
-    HtmlFile = open('src/cover.html', 'r', encoding='utf-8')
-    cover = HtmlFile.read() 
+    cover = open('src/cover.html', 'r', encoding='utf-8').read() 
     return cover
 
 
 @app.route("/search",methods=['GET', 'POST'])
 
     #Using a POST method, you can tell the API what you want to eat in a restaurant nearby
+    #place just in case IP location doesn't work on the cloud
 
 def find_restaurant():
     if request.method=='POST':
@@ -39,15 +42,17 @@ def find_restaurant():
         if not food:
             food='burger'
 
-    res=extract.get_venue_foursquare(place,food)
+    res=extract.get_venue_foursquare(food)
     data=res.json()
     restaurants=[]
     for i in range(0,5):
         restaurants.append(data['response']['groups'][0]['items'][i]['venue']['name'])
 
-    return dumps(restaurants)
-
-
+    #extract.generate_map()
+    map = open('output/mapa.html', 'r', encoding='utf-8').read() 
+    
+    #map = open(extract.generate_map(), 'r', encoding='utf-8').read() 
+    return map
 
 
 
