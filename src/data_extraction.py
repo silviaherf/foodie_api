@@ -22,23 +22,31 @@ def get_venue_foursquare(food='burger'):
     g = geocoder.ip('me')
     lat,long=g.latlng
     location=f'{str(lat)},{str(long)}'
-    
-
     today = date.today().strftime("%Y%m%d")
     
+    params={'ll':location,
+    'query':'food',
+    'limit':5,
+    'll':location,
+    'sortByDistance':1,
+    'sortByPopularity':1,
+    'client_id':api_user,
+    'client_secret':api_key,
+    'v':today
+    }
+    
+    
     baseUrl="https://api.foursquare.com"
-    endpoint=f'/v2/venues/explore/?ll={location}&query={food}&limit=5&sortByDistance=1&sortByPopularity=1&client_id={api_user}&client_secret={api_key}&v={today}'
- 
+    endpoint='/v2/venues/explore/'
     url = f"{baseUrl}{endpoint}"
     
 
-    res = requests.get(url)
+    res = requests.get(url,params=params)
         
     data = res.json()
     if res.status_code != 200:
         
         raise ValueError(f'Invalid FourSquare API call: {res.status_code}')
-                         #: {data["message"]}\nSee more in {data["documentation_url"]}')
         
     else:
         print(f"Requested data to {baseUrl}; status_code:{res.status_code}")
@@ -55,6 +63,8 @@ def generate_map():
     m.save('output/mapa.html')
 
 
+
+ #exportar folium a variable apra visualizar en return endpoint
     #with NamedTemporaryFile() as temp:
     #    m.save(f'{temp}.html')
 
