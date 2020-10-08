@@ -11,6 +11,7 @@ from tempfile import NamedTemporaryFile
 import webbrowser
 import glob
 import cv2
+from geopy.geocoders import Nominatim
 
 
 def get_venue_foursquare(food='burger'):
@@ -25,7 +26,7 @@ def get_venue_foursquare(food='burger'):
     lat,long=g.latlng
     location=f'{str(lat)},{str(long)}'
     today = date.today().strftime("%Y%m%d")
-    
+
     params={'ll':location,
     'query':'food',
     'limit':5,
@@ -36,6 +37,7 @@ def get_venue_foursquare(food='burger'):
     'client_secret':api_key,
     'v':today
     }
+
     
     
     baseUrl="https://api.foursquare.com"
@@ -55,11 +57,23 @@ def get_venue_foursquare(food='burger'):
         
         return res
 
-def generate_map():
+
+
+def generate_map(res):
     g = geocoder.ip('me')
     lat,long=g.latlng
     location=f'{str(lat)},{str(long)}'
     m = Map(location=g.latlng,zoom_start=15)
+
+    
+
+    for i in range(0,5):
+        name=res.json()['response']['groups'][0]['items'][i]['venue']['name']
+        address=res.json()['response']['groups'][0]['items'][i]['venue']['location']['address']
+        lat=res.json()['response']['groups'][0]['items'][i]['venue']['location']['labeledLatLngs'][0]['lat']
+        long=res.json()['response']['groups'][0]['items'][1]['venue']['location']['labeledLatLngs'][0]['lng']
+        chincheta = Marker(location=[lat,long], tooltip=name)
+        chincheta.add_to(m)
 
   
     m.save('output/mapa.html')
@@ -71,6 +85,7 @@ def generate_map():
     #    m.save(f'{temp}.html')
 
     #return temp.name
+
 
 
 

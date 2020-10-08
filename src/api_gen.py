@@ -49,7 +49,7 @@ def find_restaurant():
     for i in range(0,5):
         restaurants.append(data['response']['groups'][0]['items'][i]['venue']['name'])
 
-    #extract.generate_map()
+    extract.generate_map(res)
     map = open('output/mapa.html', 'r', encoding='utf-8').read() 
     
     #map = open(extract.generate_map(), 'r', encoding='utf-8').read() 
