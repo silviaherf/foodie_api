@@ -38,16 +38,11 @@ def find_restaurant():
     else:
         place=request.args.get("place")
         food = request.args.get('food')
-        if not place:
-            place='Madrid'
-        if not food:
-            food='burger'
-
-    res=extract.get_venue_foursquare(food)
-    data=res.json()
-    restaurants=[]
-    for i in range(0,5):
-        restaurants.append(data['response']['groups'][0]['items'][i]['venue']['name'])
+        
+    if place:
+        res=extract.get_venue_foursquare_near(place,food)
+    else:
+        res=extract.get_venue_foursquare(food)
 
     extract.generate_map(res)
     map = open('output/mapa.html', 'r', encoding='utf-8').read() 

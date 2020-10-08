@@ -28,11 +28,52 @@ def get_venue_foursquare(food='burger'):
     today = date.today().strftime("%Y%m%d")
 
     params={'ll':location,
-    'query':'food',
+    'query':food,
     'limit':5,
     'll':location,
     'sortByDistance':1,
-    'sortByPopularity':1,
+    'sortByPopularity':0,
+    'client_id':api_user,
+    'client_secret':api_key,
+    'v':today
+    }
+
+    
+    
+    baseUrl="https://api.foursquare.com"
+    endpoint='/v2/venues/explore/'
+    url = f"{baseUrl}{endpoint}"
+    
+
+    res = requests.get(url,params=params)
+        
+    data = res.json()
+    if res.status_code != 200:
+        
+        raise ValueError(f'Invalid FourSquare API call: {res.status_code}')
+        
+    else:
+        print(f"Requested data to {baseUrl}; status_code:{res.status_code}")
+        
+        return res
+
+def get_venue_foursquare_near(place,food='burger'):
+    
+    """
+    This function makes a request to a URL and returns its response.
+    """
+    api_user=os.getenv('CLIENT_ID')
+    api_key=os.getenv('CLIENT_SECRET')    
+
+
+    today = date.today().strftime("%Y%m%d")
+
+    params={'near':place,
+    'query':food,
+    'limit':5,
+    'll':location,
+    'sortByDistance':1,
+    'sortByPopularity':0,
     'client_id':api_user,
     'client_secret':api_key,
     'v':today
@@ -59,10 +100,11 @@ def get_venue_foursquare(food='burger'):
 
 
 
+
 def generate_map(res):
     g = geocoder.ip('me')
-    lat,long=g.latlng
-    location=f'{str(lat)},{str(long)}'
+    lat_me,long_me=g.latlng
+    location=f'{str(lat_me)},{str(long_me)}'
     m = Map(location=g.latlng,zoom_start=15)
 
     
