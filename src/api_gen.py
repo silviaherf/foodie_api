@@ -57,3 +57,9 @@ def find_restaurant():
 
 
 
+@app.route("/calculate",methods=['POST'])
+def calculate_kcals():
+    
+    pass
+
+

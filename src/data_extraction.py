@@ -9,6 +9,8 @@ import branca
 from folium.plugins import HeatMap
 from tempfile import NamedTemporaryFile
 import webbrowser
+import glob
+import cv2
 
 
 def get_venue_foursquare(food='burger'):
@@ -69,4 +71,18 @@ def generate_map():
     #    m.save(f'{temp}.html')
 
     #return temp.name
+
+
+
+
+def pictures_to_df(path="../input/images/"):
+
+    dishes = [*glob.glob(f"{path}/**/*.jpg"), *glob.glob(f"{path}/**/*.JPG")]
+    pictures = pd.DataFrame({
+        "path": dishes
+    })
+
+    pictures['dish']=df.path.apply(lambda x: x.split("/")[3])
+    return pictures
+
 
