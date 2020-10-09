@@ -25,24 +25,26 @@ def saludo():
     return cover
 
 
-@app.route("/search",methods=['GET', 'POST'])
+@app.route("/search/results",methods=['GET', 'POST'])
 
     #Using a POST method, you can tell the API what you want to eat in a restaurant nearby
     #place just in case IP location doesn't work on the cloud
 
-def find_restaurant():
+def return_restaurants():
     if request.method=='POST':
         place = request.form.get('place')
         food = request.form.get('food')
+        price = request.form.get(len('price'))
 
     else:
         place=request.args.get("place")
         food = request.args.get('food')
+        price = request.args.get('price')
         
     if place:
-        res=extract.get_venue_foursquare_near(place,food)
+        res=extract.get_venue_foursquare_near(place=place,food=food)
     else:
-        res=extract.get_venue_foursquare(food)
+        res=extract.get_venue_foursquare(food=food,price=price)
 
     extract.generate_map(res)
     map = open('output/mapa.html', 'r', encoding='utf-8').read() 
@@ -50,6 +52,31 @@ def find_restaurant():
     #map = open(extract.generate_map(), 'r', encoding='utf-8').read() 
     return map
 
+
+@app.route("/search",methods=['GET', 'POST'])
+
+    #Using a POST method, you can tell the API what you want to eat in a restaurant nearby
+    #place just in case IP location doesn't work on the cloud
+
+def ask_restaurant():
+    if request.method=='POST':
+        place = request.form.get('place')
+        food = request.form.get('food')
+        price = request.form.get(len('price'))
+
+    else:
+        place=request.args.get("place")
+        food = request.args.get('food')
+        price = request.args.get('price')
+        
+    if place:
+        res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
+
+    else:
+        res=extract.get_venue_foursquare(food=food,price=price)
+
+    search = open('src/search.html', 'r', encoding='utf-8').read() 
+    return search
 
 
 @app.route("/calculate",methods=['POST'])

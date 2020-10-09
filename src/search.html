@@ -1,0 +1,26 @@
+<html style="font-family: sans-serif;">
+
+<body style="background-color: rgb(191, 226, 241);text-align: center;margin-top: 10vh;">
+    <form method="post" action="/search/results">
+        <h2>¿Qué quieres comer hoy?</h2>
+        <input name="food" type="text" />
+        <h2>¿En qué zona?</h2>
+        <input name="place" type="text" />
+        <h2>¿En qué rango de precio?</h2>
+        <input list="price" type="text" name="price" />
+        <datalist id="price">
+            <option value="€">
+            <option value="€€">
+            <option value="€€€">
+            <option value="€€€€">
+        </datalist>
+
+        <p>
+            </h2>
+            <input type="submit" name="¡A comer!"/>
+        </p>
+
+    </form>
+</body>
+
+</html>
