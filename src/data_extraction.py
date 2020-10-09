@@ -75,7 +75,7 @@ def get_venue_foursquare(food='burger',price=2,place='Madrid'):
 
 
 
-def make_markers(res,map,i=0):
+def make_markers(res,map,i):
     name=res.json()['response']['groups'][0]['items'][i]['venue']['name']
     address=res.json()['response']['groups'][0]['items'][i]['venue']['location']['address']
     lat=res.json()['response']['groups'][0]['items'][i]['venue']['location']['labeledLatLngs'][0]['lat']
@@ -86,11 +86,11 @@ def make_markers(res,map,i=0):
 
 
 
-def generate_map(res):
+def generate_map(res,place):
     g = geocoder.ip('me')
     lat_me,long_me=g.latlng
     location=f'{str(lat_me)},{str(long_me)}'
-    m = Map(location=g.latlng,zoom_start=15)
+    m = Map(location=place,zoom_start=15)
 
     
     if len(res.json()['response']['groups'][0]['items'])>=5:

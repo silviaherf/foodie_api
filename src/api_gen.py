@@ -10,7 +10,7 @@ from bson.json_util import dumps
 import base64
 import branca
 import webbrowser
-
+from geopy.geocoders import Nominatim
 
 
 
@@ -44,8 +44,8 @@ def ask_restaurant():
     #if place:
     res=extract.get_venue_foursquare(place=place,food=food,price=price)
 
-   # else:
-       # res=extract.get_venue_foursquare(food=food,price=price)
+    #else:
+        #res=extract.get_venue_foursquare(food=food,price=price)
 
     search = open('src/search.html', 'r', encoding='utf-8').read() 
     return search
@@ -75,8 +75,11 @@ def return_restaurants():
     #else:
         #res=extract.get_venue_foursquare(food=food,price=price)
 
+    locator = Nominatim(user_agent='myGeocoder')
+    location=list(locator.geocode(place)[1])
 
-    extract.generate_map(res)
+
+    extract.generate_map(res,location)
     map = open('output/mapa.html', 'r', encoding='utf-8').read() 
     
     #map = open(extract.generate_map(), 'r', encoding='utf-8').read() 
