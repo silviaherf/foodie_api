@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import requests
-from flask import Flask,request, Response
+from flask import Flask,request, Response, redirect, url_for
 import re
 import src.data_extraction as extract
 import json
@@ -26,36 +26,12 @@ def saludo():
     return cover
 
 
-@app.route("/search",methods=['GET', 'POST'])
-
-    #Using a POST method, you can tell the API what you want to eat in a restaurant nearby
-    #place just in case IP location doesn't work on the cloud
+@app.route("/search")
 
 def ask_restaurant():
-    if request.method=='POST':
-        place = request.form.get('place')
-        food = request.form.get('food')
-        price = request.form.get(len('price')+1)
-
-
-    else:
-        place = request.args.get("place")
-        food = request.args.get('food')
-        price = request.args.get('price')
-        
-    if place:
-        res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
-        locator = Nominatim(user_agent='myGeocoder')
-        location=list(locator.geocode(place)[1])
-
-    else:
-        res=extract.get_venue_foursquare(food=food,price=price)
-        g = geocoder.ip('me')
-        location=g.latlng
-
-
     search = open('src/search.html', 'r', encoding='utf-8').read() 
     return search
+
 
 
 
@@ -65,32 +41,47 @@ def ask_restaurant():
     #place just in case IP location doesn't work on the cloud
 
 def return_restaurants():
+    
     if request.method=='POST':
         place = request.form.get('place')
         food = request.form.get('food')
-        price = request.form.get(len('price')+1)
+        price = request.form.get(len('price'))
 
 
-    else:
+    elif request.method=='GET':
         place = request.args.get("place")
         food = request.args.get('food')
         price = request.args.get('price')
-        
+       
     if place:
         res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
+        if res.json()['response']['warning']:
+            return redirect("/search/results/error")
         locator = Nominatim(user_agent='myGeocoder')
         location=list(locator.geocode(place)[1])
 
     else:
         res=extract.get_venue_foursquare(food=food,price=price)
+        if res.json()['response']['warning']:
+            return redirect("/search/results/error")
         g = geocoder.ip('me')
         location=g.latlng
 
-    extract.generate_map(res,location)
+    extract.generate_map(res=res,place=location)
     map = open('output/mapa.html', 'r', encoding='utf-8').read() 
     
     #map = open(extract.generate_map(), 'r', encoding='utf-8').read() 
     return map
+
+
+@app.route("/search/results/error")
+
+    #Using a POST method, you can tell the API what you want to eat in a restaurant nearby
+    #place just in case IP location doesn't work on the cloud
+
+def warning():
+    warning = open('src/warning.html', 'r', encoding='utf-8').read() 
+    return warning
 
 
 
