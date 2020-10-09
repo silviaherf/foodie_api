@@ -54,6 +54,7 @@ def return_restaurants():
         place = request.args.get("place")
         food = request.args.get('food')
         price = request.args.get('price')
+  
        
     if place:
         res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
