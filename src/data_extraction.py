@@ -14,7 +14,7 @@ import cv2
 from geopy.geocoders import Nominatim
 
 
-def get_venue_foursquare(food='burger',price=2,place='Madrid'):
+def get_venue_foursquare(food='burger',price=2):
     
     """
     This function makes a request to a URL and returns its response.
@@ -23,36 +23,22 @@ def get_venue_foursquare(food='burger',price=2,place='Madrid'):
     api_key=os.getenv('CLIENT_SECRET')    
     today = date.today().strftime("%Y%m%d")
 
+
+    g = geocoder.ip('me')
+    lat,long=g.latlng
+    location=f'{str(lat)},{str(long)}'
     
-    if place:
-        params={
-        'near':place,
-        'query':food,
-        'limit':5,
-        'sortByDistance':1,
-        'sortByPopularity':0,
-        'price':price,
-        'client_id':api_user,
-        'client_secret':api_key,
-        'v':today
-        }
-        
-    else:
-        g = geocoder.ip('me')
-        lat,long=g.latlng
-        location=f'{str(lat)},{str(long)}'
-        
-    
-        params={'ll':location,
-        'query':food,
-        'limit':5,
-        'sortByDistance':1,
-        'sortByPopularity':0,
-        'price':price,
-        'client_id':api_user,
-        'client_secret':api_key,
-        'v':today
-        }
+
+    params={'ll':location,
+    'query':food,
+    'limit':5,
+    'sortByDistance':1,
+    'sortByPopularity':0,
+    'price':price,
+    'client_id':api_user,
+    'client_secret':api_key,
+    'v':today
+    }
 
     
     
@@ -74,8 +60,47 @@ def get_venue_foursquare(food='burger',price=2,place='Madrid'):
         return res
 
 
+def get_venue_foursquare_near(place,food='burger',price=2):
+    
+    """
+    This function makes a request to a URL and returns its response.
+    """
+    api_user=os.getenv('CLIENT_ID')
+    api_key=os.getenv('CLIENT_SECRET')    
+    today = date.today().strftime("%Y%m%d")
 
-def make_markers(res,map,i):
+  
+    params={
+    'near':place,
+    'query':food,
+    'limit':5,
+    'sortByDistance':1,
+    'sortByPopularity':0,
+    'price':price,
+    'client_id':api_user,
+    'client_secret':api_key,
+    'v':today
+    }
+
+    
+    baseUrl="https://api.foursquare.com"
+    endpoint='/v2/venues/explore/'
+    url = f"{baseUrl}{endpoint}"
+    
+
+    res = requests.get(url,params=params)
+        
+    data = res.json()
+    if res.status_code != 200:
+        
+        raise ValueError(f'Invalid FourSquare API call: {res.status_code}')
+        
+    else:
+        print(f"Requested data to {baseUrl}; status_code:{res.status_code}")
+        
+        return res
+
+def make_markers(res,map,i=0):
     name=res.json()['response']['groups'][0]['items'][i]['venue']['name']
     address=res.json()['response']['groups'][0]['items'][i]['venue']['location']['address']
     lat=res.json()['response']['groups'][0]['items'][i]['venue']['location']['labeledLatLngs'][0]['lat']
@@ -87,9 +112,7 @@ def make_markers(res,map,i):
 
 
 def generate_map(res,place):
-    g = geocoder.ip('me')
-    lat_me,long_me=g.latlng
-    location=f'{str(lat_me)},{str(long_me)}'
+
     m = Map(location=place,zoom_start=15)
 
     
@@ -112,15 +135,5 @@ def generate_map(res,place):
 
 
 
-
-def pictures_to_df(path="../input/images/"):
-
-    dishes = [*glob.glob(f"{path}/**/*.jpg"), *glob.glob(f"{path}/**/*.JPG")]
-    pictures = pd.DataFrame({
-        "path": dishes
-    })
-
-    pictures['dish']=df.path.apply(lambda x: x.split("/")[3])
-    return pictures
 
 

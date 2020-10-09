@@ -11,6 +11,7 @@ import base64
 import branca
 import webbrowser
 from geopy.geocoders import Nominatim
+import geocoder
 
 
 
@@ -34,18 +35,24 @@ def ask_restaurant():
     if request.method=='POST':
         place = request.form.get('place')
         food = request.form.get('food')
-        price = request.form.get(len('price'))
+        price = request.form.get(len('price')+1)
+
 
     else:
-        place=request.args.get("place")
+        place = request.args.get("place")
         food = request.args.get('food')
         price = request.args.get('price')
         
-    #if place:
-    res=extract.get_venue_foursquare(place=place,food=food,price=price)
+    if place:
+        res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
+        locator = Nominatim(user_agent='myGeocoder')
+        location=list(locator.geocode(place)[1])
 
-    #else:
-        #res=extract.get_venue_foursquare(food=food,price=price)
+    else:
+        res=extract.get_venue_foursquare(food=food,price=price)
+        g = geocoder.ip('me')
+        location=g.latlng
+
 
     search = open('src/search.html', 'r', encoding='utf-8').read() 
     return search
@@ -69,15 +76,15 @@ def return_restaurants():
         food = request.args.get('food')
         price = request.args.get('price')
         
-    #if place:
-    res=extract.get_venue_foursquare(place=place,food=food,price=price)
+    if place:
+        res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
+        locator = Nominatim(user_agent='myGeocoder')
+        location=list(locator.geocode(place)[1])
 
-    #else:
-        #res=extract.get_venue_foursquare(food=food,price=price)
-
-    locator = Nominatim(user_agent='myGeocoder')
-    location=list(locator.geocode(place)[1])
-
+    else:
+        res=extract.get_venue_foursquare(food=food,price=price)
+        g = geocoder.ip('me')
+        location=g.latlng
 
     extract.generate_map(res,location)
     map = open('output/mapa.html', 'r', encoding='utf-8').read() 
