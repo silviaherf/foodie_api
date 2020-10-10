@@ -14,7 +14,7 @@ import cv2
 from geopy.geocoders import Nominatim
 
 
-def get_venue_foursquare(food='food',price=2):
+def get_venue_foursquare(food='food',price=[1,2]):
     
     """
     This function makes a request to a URL and returns its response.
@@ -28,8 +28,9 @@ def get_venue_foursquare(food='food',price=2):
     lat,long=g.latlng
     location=f'{str(lat)},{str(long)}'
     
-
+    
     params={'ll':location,
+    'radious':2,
     'query':food,
     'limit':5,
     'sortByDistance':1,
@@ -60,7 +61,7 @@ def get_venue_foursquare(food='food',price=2):
         return res
 
 
-def get_venue_foursquare_near(place,food='food',price=2):
+def get_venue_foursquare_near(place,food='food',price=[1,2]):
     
     """
     This function makes a request to a URL and returns its response.
@@ -72,6 +73,7 @@ def get_venue_foursquare_near(place,food='food',price=2):
   
     params={
     'near':place,
+    'radious':2,
     'query':food,
     'limit':5,
     'sortByDistance':1,
