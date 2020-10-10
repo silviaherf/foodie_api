@@ -109,14 +109,13 @@ def make_markers(res,map,i=0):
     chincheta.add_to(map)
 
 
-
-
 def generate_map(res,place):
     m = Map(location=place,zoom_start=15)
     if res.json()['response']['totalResults']>0 and res.json()['response']['totalResults']<5:
         for i in range(0,res.json()['response']['totalResults']):
             make_markers(res=res,map=m,i=i)
-    elif res.json()['response']['totalResults']>0 and res.json()['response']['totalResults']>=5:
+        m.save('output/mapa.html')
+    elif res.json()['response']['totalResults']>=5:
         for i in range(0,5):
             make_markers(res=res,map=m,i=i)
         m.save('output/mapa.html')

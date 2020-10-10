@@ -63,10 +63,8 @@ def return_restaurants():
         if price and food:
             res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
 
-        elif food:
-            res=extract.get_venue_foursquare_near(place=place,food=food)
 
-        elif price:
+        elif not food and price:
             res=extract.get_venue_foursquare_near(place=place,price=price)
 
        
@@ -77,10 +75,7 @@ def return_restaurants():
         if price and food:
             res=extract.get_venue_foursquare(food=food,price=price)
 
-        elif food:
-            res=extract.get_venue_foursquare(food=food)
-
-        elif price:
+        elif not food and price:
             res=extract.get_venue_foursquare(price=price)
  
         g = geocoder.ip('me')
