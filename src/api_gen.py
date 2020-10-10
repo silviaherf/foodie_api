@@ -86,10 +86,10 @@ def return_restaurants():
 
     else:
         extract.generate_map(res=res,place=location)
-        map = open('output/mapa.html', 'r', encoding='utf-8').read() 
+        resultados = open('src/restaurants.html', 'r', encoding='utf-8').read() 
         
         #map = open(extract.generate_map(), 'r', encoding='utf-8').read() 
-        return map
+        return resultados
 
 
 @app.route("/search/results/error")
