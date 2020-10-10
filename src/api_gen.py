@@ -69,12 +69,9 @@ def return_restaurants():
         elif price:
             res=extract.get_venue_foursquare_near(place=place,price=price)
 
-        try:
-            res.json()['response']['warning']
-            return redirect("/search/results/error")
-        except:
-            locator = Nominatim(user_agent='myGeocoder')
-            location=list(locator.geocode(place)[1])
+       
+        locator = Nominatim(user_agent='myGeocoder')
+        location=list(locator.geocode(place)[1])
 
     else:
         if price and food:
@@ -85,21 +82,19 @@ def return_restaurants():
 
         elif price:
             res=extract.get_venue_foursquare(price=price)
+ 
+        g = geocoder.ip('me')
+        location=g.latlng
 
-        try:
-            res.json()['response']['warning']
-            return redirect("/search/results/error")
-        except:
-            g = geocoder.ip('me')
-            location=g.latlng
+    if res.json()['response']['totalResults']==0:
+        return redirect("/search/results/error")
 
-
-
-    extract.generate_map(res=res,place=location)
-    map = open('output/mapa.html', 'r', encoding='utf-8').read() 
-    
-    #map = open(extract.generate_map(), 'r', encoding='utf-8').read() 
-    return map
+    else:
+        extract.generate_map(res=res,place=location)
+        map = open('output/mapa.html', 'r', encoding='utf-8').read() 
+        
+        #map = open(extract.generate_map(), 'r', encoding='utf-8').read() 
+        return map
 
 
 @app.route("/search/results/error")

@@ -14,7 +14,7 @@ import cv2
 from geopy.geocoders import Nominatim
 
 
-def get_venue_foursquare(food='burger',price=2):
+def get_venue_foursquare(food='food',price=2):
     
     """
     This function makes a request to a URL and returns its response.
@@ -60,7 +60,7 @@ def get_venue_foursquare(food='burger',price=2):
         return res
 
 
-def get_venue_foursquare_near(place,food='burger',price=2):
+def get_venue_foursquare_near(place,food='food',price=2):
     
     """
     This function makes a request to a URL and returns its response.
@@ -102,9 +102,9 @@ def get_venue_foursquare_near(place,food='burger',price=2):
 
 def make_markers(res,map,i=0):
     name=res.json()['response']['groups'][0]['items'][i]['venue']['name']
-    address=res.json()['response']['groups'][0]['items'][i]['venue']['location']['address']
+    address=res.json()['response']['groups'][0]['items'][i]['venue']['location']['formattedAddress'][0]
     lat=res.json()['response']['groups'][0]['items'][i]['venue']['location']['labeledLatLngs'][0]['lat']
-    long=res.json()['response']['groups'][0]['items'][1]['venue']['location']['labeledLatLngs'][0]['lng']
+    long=res.json()['response']['groups'][0]['items'][i]['venue']['location']['labeledLatLngs'][0]['lng']
     chincheta = Marker(location=[lat,long], tooltip=name)
     chincheta.add_to(map)
 
@@ -112,17 +112,14 @@ def make_markers(res,map,i=0):
 
 
 def generate_map(res,place):
-
     m = Map(location=place,zoom_start=15)
-
-    
-    if len(res.json()['response']['groups'][0]['items'])>=5:
+    if res.json()['response']['totalResults']>0 and res.json()['response']['totalResults']<5:
+        for i in range(0,res.json()['response']['totalResults']):
+            make_markers(res=res,map=m,i=i)
+    elif res.json()['response']['totalResults']>0 and res.json()['response']['totalResults']>=5:
         for i in range(0,5):
             make_markers(res=res,map=m,i=i)
-    else:
-        for i in range(0,len(res.json()['response']['groups'][0]['items'])):
-            make_markers(res=res,map=m,i=i)
-    m.save('output/mapa.html')
+        m.save('output/mapa.html')
 
 
 
