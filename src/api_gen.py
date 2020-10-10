@@ -47,7 +47,10 @@ def return_restaurants():
         place = request.form.get('place')
         food = request.form.get('food')
         price_post = request.form.get('price')
-        price=prices[price_post]
+        if price_post:
+            price=prices[price_post]
+        else:
+            price=2
 
 
     elif request.method=='GET':
@@ -57,7 +60,15 @@ def return_restaurants():
   
        
     if place:
-        res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
+        if price and food:
+            res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
+
+        elif food:
+            res=extract.get_venue_foursquare_near(place=place,food=food)
+
+        elif price:
+            res=extract.get_venue_foursquare_near(place=place,price=price)
+
         try:
             res.json()['response']['warning']
             return redirect("/search/results/error")
@@ -66,13 +77,23 @@ def return_restaurants():
             location=list(locator.geocode(place)[1])
 
     else:
-        res=extract.get_venue_foursquare(food=food,price=price)
+        if price and food:
+            res=extract.get_venue_foursquare(food=food,price=price)
+
+        elif food:
+            res=extract.get_venue_foursquare(food=food)
+
+        elif price:
+            res=extract.get_venue_foursquare(price=price)
+
         try:
             res.json()['response']['warning']
             return redirect("/search/results/error")
         except:
             g = geocoder.ip('me')
             location=g.latlng
+
+
 
     extract.generate_map(res=res,place=location)
     map = open('output/mapa.html', 'r', encoding='utf-8').read() 
