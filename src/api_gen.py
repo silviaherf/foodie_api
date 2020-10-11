@@ -41,7 +41,7 @@ def ask_restaurant():
     #place just in case IP location doesn't work on the cloud
 
 def return_restaurants():
-    prices={'€':1,'€€':2,'€€€':2,'€€€€':4}
+    prices={'€':1,'€€':2,'€€€':3,'€€€€':4}
     
     if request.method=='POST':
         place = request.form.get('place')
