@@ -94,8 +94,7 @@ def return_restaurants():
 
 @app.route("/search/results/error")
 
-    #Using a POST method, you can tell the API what you want to eat in a restaurant nearby
-    #place just in case IP location doesn't work on the cloud
+    #It returns a warning in case your query did not find any restaurant
 
 def warning():
     warning = open('src/warning.html', 'r', encoding='utf-8').read() 
