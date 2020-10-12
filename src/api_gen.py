@@ -8,7 +8,6 @@ import src.data_extraction as extract
 import json
 from bson.json_util import dumps
 import base64
-import branca
 import webbrowser
 from geopy.geocoders import Nominatim
 import geocoder
@@ -22,14 +21,14 @@ app = Flask("foodie")
     #This is just the first view of the API
    
 def saludo():
-    cover = open('src/cover.html', 'r', encoding='utf-8').read() 
+    cover = open('src/html/cover.html', 'r', encoding='utf-8').read() 
     return cover
 
 
 @app.route("/search")
 
 def ask_restaurant():
-    search = open('src/search.html', 'r', encoding='utf-8').read() 
+    search = open('src/html/search.html', 'r', encoding='utf-8').read() 
     return search
 
 
@@ -105,23 +104,21 @@ def warning():
 
 @app.route("/upload")
 def upload_image():
-    image = open('src/upload_plate.html', 'r', encoding='utf-8').read() 
-    return search_image
+    upload = open('src/html/upload_plate.html', 'r', encoding='utf-8').read() 
+    return upload
 
 
 @app.route("/calculate")
 def calculate_kcals():
-    search_calories = extract.image_recognition(plate)
+    search_calories = extract.image_recognition(image)
     return search_calories
-
-
 
 @app.route("/calculate/results")
 def show_kcals():
     plate=extract.image_recognition()
     extract.get_calories(recipe=plate)
 
-    calories= open('src/calories.html', 'r', encoding='utf-8').read() 
+    calories= open('src/html/calories.html', 'r', encoding='utf-8').read() 
 
     return calories
 
