@@ -103,9 +103,26 @@ def warning():
 
 
 
-@app.route("/calculate",methods=['POST'])
+@app.route("/upload")
+def upload_image():
+    image = open('src/upload_plate.html', 'r', encoding='utf-8').read() 
+    return search_image
+
+
+@app.route("/calculate")
 def calculate_kcals():
-    
-    pass
+    search_calories = extract.image_recognition(plate)
+    return search_calories
+
+
+
+@app.route("/calculate/results")
+def show_kcals():
+    plate=extract.image_recognition()
+    extract.get_calories(recipe=plate)
+
+    calories= open('src/calories.html', 'r', encoding='utf-8').read() 
+
+    return calories
 
 
