@@ -108,12 +108,8 @@ def upload_image():
     return upload
 
 
-@app.route("/calculate")
-def calculate_kcals():
-    search_calories = extract.image_recognition(image)
-    return search_calories
 
-@app.route("/calculate/results")
+@app.route("/calculate")
 def show_kcals():
     plate=extract.image_recognition()
     extract.get_calories(recipe=plate)
