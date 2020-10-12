@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import requests
-from flask import Flask,request, Response, redirect, url_for
+from flask import Flask,request, Response, redirect, url_for, render_template
 import re
 import src.data_extraction as extract
 import json
@@ -89,7 +89,8 @@ def return_restaurants():
         
         
         map = extract.generate_map(res=res,place=location)._repr_html_()
-        return map
+     
+        return open('src/html/restaurants.html').read().format(mapa=map)
 
 
 @app.route("/search/results/error")
@@ -111,11 +112,13 @@ def upload_image():
 
 @app.route("/calculate")
 def show_kcals():
-    plate=extract.image_recognition()
-    extract.get_calories(recipe=plate)
+    plate=extract.image_recognition(image)
+    calories=extract.get_calories(recipe=plate)
 
-    calories= open('src/html/calories.html', 'r', encoding='utf-8').read() 
+    #calculator= open('src/html/calories.html', 'r', encoding='utf-8').read().format(p=calories,c=calories) 
 
-    return calories
+    
+
+    return open('src/html/calories.html').read().format(plate=plate, calories=calories)
 
 
