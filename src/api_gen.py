@@ -86,9 +86,10 @@ def return_restaurants():
 
     else:
         extract.generate_map(res=res,place=location)
-        map = open('output/mapa.html', 'r', encoding='utf-8').read() 
+        #map = open('output/mapa.html', 'r', encoding='utf-8').read() 
         
-        #map = open(extract.generate_map(), 'r', encoding='utf-8').read() 
+        
+        map = extract.generate_map(res=res,place=location)._repr_html_()
         return map
 
 
