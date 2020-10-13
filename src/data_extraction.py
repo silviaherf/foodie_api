@@ -132,19 +132,23 @@ def generate_map(res,place):
 
 
 
- #exportar folium a variable apra visualizar en return endpoint
-    #with NamedTemporaryFile() as temp:
-    #    m.save(f'{temp}.html')
-
-    #return temp.name
-
-
 def image_recognition(image):
     """
     This function uses NN for image recognition
     """
+  
+    img = cv2.imread(image)
+    img2 = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+    dim=(75,75)
+    image=cv2.resize(img2, dim,interpolation=cv2.INTER_AREA)
+    image = np.expand_dims(image, axis=0) 
 
-    plate=0
+    model = tf.keras.models.load_model('output/models/full_V3_check.hdf5')
+    pred = model.predict(image)
+    
+    for k,v in test_generator.class_indices.items():
+        if v==int(np.where(pred == 1)[1]):
+            plate=k
     return plate
 
 
@@ -153,7 +157,8 @@ def get_calories(recipe='pizza'):
     """
     This function makes a request to Spooncaular API for a recipe and returns its response.
     """
-   
+    
+
     api_key=os.getenv('SPOON_KEY')    
 
     recipe=recipe.replace(' ','+')

@@ -11,6 +11,7 @@ import base64
 import webbrowser
 from geopy.geocoders import Nominatim
 import geocoder
+import urllib.request
 
 
 
@@ -110,15 +111,28 @@ def upload_image():
 
 
 
-@app.route("/calculate")
+@app.route("/calculate",methods=['POST'])
 def show_kcals():
-    plate=extract.image_recognition(image)
+    image = request.form.get('image')
+    url = request.form.get('url')
+
+    if image:
+
+        plate=class_recognition(image)
+    
+    elif url:
+
+        urllib.request.urlretrieve(url, 'downloads/image.jpg')
+        image='downloads/image.jpg'
+        plate=class_recognition(image)
+
+    
     calories=extract.get_calories(recipe=plate)
 
     #calculator= open('src/html/calories.html', 'r', encoding='utf-8').read().format(p=calories,c=calories) 
 
     
 
-    return open('src/html/calories.html').read().format(plate=plate, calories=calories)
+    return open('src/html/calories.html', 'r', encoding='utf-8').read().format(plate=plate, calories=calories)
 
 
