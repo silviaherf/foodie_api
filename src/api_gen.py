@@ -2,16 +2,16 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import requests
-from flask import Flask,request, Response, redirect, url_for
+from flask import Flask,request, Response, redirect, url_for, render_template
 import re
 import src.data_extraction as extract
 import json
 from bson.json_util import dumps
 import base64
-import branca
 import webbrowser
 from geopy.geocoders import Nominatim
 import geocoder
+import urllib.request
 
 
 
@@ -22,14 +22,14 @@ app = Flask("foodie")
     #This is just the first view of the API
    
 def saludo():
-    cover = open('src/cover.html', 'r', encoding='utf-8').read() 
+    cover = open('src/html/cover.html', 'r', encoding='utf-8').read() 
     return cover
 
 
 @app.route("/search")
 
 def ask_restaurant():
-    search = open('src/search.html', 'r', encoding='utf-8').read() 
+    search = open('src/html/search.html', 'r', encoding='utf-8').read() 
     return search
 
 
@@ -90,13 +90,13 @@ def return_restaurants():
         
         
         map = extract.generate_map(res=res,place=location)._repr_html_()
-        return map
+     
+        return open('src/html/restaurants.html').read().format(mapa=map)
 
 
 @app.route("/search/results/error")
 
-    #Using a POST method, you can tell the API what you want to eat in a restaurant nearby
-    #place just in case IP location doesn't work on the cloud
+    #It returns a warning in case your query did not find any restaurant
 
 def warning():
     warning = open('src/warning.html', 'r', encoding='utf-8').read() 
@@ -104,9 +104,35 @@ def warning():
 
 
 
+@app.route("/upload")
+def upload_image():
+    upload = open('src/html/upload_plate.html', 'r', encoding='utf-8').read() 
+    return upload
+
+
+
 @app.route("/calculate",methods=['POST'])
-def calculate_kcals():
+def show_kcals():
+    image = request.form.get('image')
+    url = request.form.get('url')
+
+    if image:
+
+        plate=class_recognition(image)
     
-    pass
+    elif url:
+
+        urllib.request.urlretrieve(url, 'downloads/image.jpg')
+        image='downloads/image.jpg'
+        plate=class_recognition(image)
+
+    
+    calories=extract.get_calories(recipe=plate)
+
+    #calculator= open('src/html/calories.html', 'r', encoding='utf-8').read().format(p=calories,c=calories) 
+
+    
+
+    return open('src/html/calories.html', 'r', encoding='utf-8').read().format(plate=plate, calories=calories)
 
 
