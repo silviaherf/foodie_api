@@ -17,6 +17,7 @@ import urllib.request
 
 app = Flask("foodie")
 
+
 @app.route("/")
 
     #This is just the first view of the API
@@ -90,9 +91,21 @@ def return_restaurants():
         
         
         map = extract.generate_map(res=res,place=location)._repr_html_()
-        #return open('src/html/restaurants.html').read().format(mapa=map)
+        return open('src/html/restaurants.html').read()
      
-        return map
+        #return map
+
+
+@app.route("/search/results/mapa")
+
+    #It returns the map
+
+def show_map():
+    map = open('output/mapa.html', 'r', encoding='utf-8').read() 
+    return map
+
+
+
 
 
 @app.route("/search/results/error")

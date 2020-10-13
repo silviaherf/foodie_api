@@ -123,11 +123,11 @@ def generate_map(res,place):
     if res.json()['response']['totalResults']>0 and res.json()['response']['totalResults']<5:
         for i in range(0,res.json()['response']['totalResults']):
             make_markers(res=res,map=m,i=i)
-        #m.save('output/mapa.html')
+        m.save('output/mapa.html')
     elif res.json()['response']['totalResults']>=5:
         for i in range(0,5):
             make_markers(res=res,map=m,i=i)
-        #m.save('output/mapa.html')
+        m.save('output/mapa.html')
     return m
 
 
