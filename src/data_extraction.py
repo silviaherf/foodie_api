@@ -103,6 +103,7 @@ def get_venue_foursquare_near(place,food='food',price=[1,2]):
         
         return res
 
+
 def make_markers(res,map,i=0):
     """
     This function makes a request to Spooncaular API for a recipe and returns its response.
@@ -136,17 +137,22 @@ def class_recognition(image):
     """
     This function uses NN for image recognition
     """
-  
+    clases={'hamburger': 0, 
+    'pizza': 1, 
+    'spaghetti_bolognese': 2, 
+    'sushi': 3, 
+    'tacos': 4}
+
     img = cv2.imread(image)
     img2 = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
     dim=(75,75)
     image=cv2.resize(img2, dim,interpolation=cv2.INTER_AREA)
     image = np.expand_dims(image, axis=0) 
 
-    model = tf.keras.models.load_model('output/models/full_V3_check.hdf5')
+    model = tf.keras.models.load_model('output/models/13_oct/InceptionV4_model.hdf5')
     pred = model.predict(image)
     
-    for k,v in test_generator.class_indices.items():
+    for k,v in clases.items():
         if v==int(np.where(pred == 1)[1]):
             plate=k
     return plate

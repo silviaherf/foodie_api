@@ -12,6 +12,7 @@ import webbrowser
 from geopy.geocoders import Nominatim
 import geocoder
 import urllib.request
+from translate import Translator
 
 
 
@@ -123,10 +124,11 @@ def upload_image():
 
 
 
-@app.route("/calculate",methods=['POST'])
+@app.route("/calculate",methods=['GET','POST'])
 def show_kcals():
-    image = request.form.get('image')
-    url = request.form.get('url')
+    if request.method=='POST':
+        image = request.form.get('image')
+        url = request.form.get('url')
 
     if image:
 
@@ -138,13 +140,22 @@ def show_kcals():
         image='src/downloads/image.jpg'
         plate=extract.class_recognition(image)
 
-    
-    calories=extract.get_calories(recipe=plate)
+     
+    translator= Translator(to_lang="en")
+    translator = translator.translate(plate)
+
+
+    calories=extract.get_calories(recipe=translator)
 
     #calculator= open('src/html/calories.html', 'r', encoding='utf-8').read().format(p=calories,c=calories) 
 
+    return render_template('index.html', plate=plate,calories=calories)
+    
     
 
-    return open('src/html/calories.html', 'r', encoding='utf-8').read().format(plate=plate, calories=calories)
+@app.route("/calculate/results")
+def nutrition_facts():
+   
+    nutritional=open('src/html/calories.html', 'r', encoding='utf-8').read()
 
-
+    return nutritional
