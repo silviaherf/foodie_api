@@ -87,10 +87,8 @@ def return_restaurants():
 
     else:
         extract.generate_map(res=res,place=location)
-        #map = open('output/mapa.html', 'r', encoding='utf-8').read() 
         
-        
-        map = extract.generate_map(res=res,place=location)._repr_html_()
+        #map = extract.generate_map(res=res,place=location)._repr_html_()
         return open('src/html/restaurants.html').read()
      
         #return map
@@ -98,7 +96,7 @@ def return_restaurants():
 
 @app.route("/search/results/mapa")
 
-    #It returns the map
+    #It returns the map in order to set it in the iframe HTML
 
 def show_map():
     map = open('output/mapa.html', 'r', encoding='utf-8').read() 
