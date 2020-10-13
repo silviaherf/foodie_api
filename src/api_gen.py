@@ -122,8 +122,8 @@ def show_kcals():
     
     elif url:
 
-        urllib.request.urlretrieve(url, 'downloads/image.jpg')
-        image='downloads/image.jpg'
+        urllib.request.urlretrieve(url, 'src/downloads/image.jpg')
+        image='src/downloads/image.jpg'
         plate=extract.class_recognition(image)
 
     

@@ -1,4 +1,5 @@
 import requests
+import numpy as np
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -13,6 +14,7 @@ import glob
 import cv2
 from geopy.geocoders import Nominatim
 import cgi, cgitb
+import tensorflow as tf
 
 
 def get_venue_foursquare(food='food',price=[1,2]):
@@ -132,7 +134,7 @@ def generate_map(res,place):
 
 
 
-def image_recognition(image):
+def class_recognition(image):
     """
     This function uses NN for image recognition
     """
