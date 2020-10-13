@@ -118,13 +118,13 @@ def show_kcals():
 
     if image:
 
-        plate=class_recognition(image)
+        plate=extract.class_recognition(image)
     
     elif url:
 
         urllib.request.urlretrieve(url, 'downloads/image.jpg')
         image='downloads/image.jpg'
-        plate=class_recognition(image)
+        plate=extract.class_recognition(image)
 
     
     calories=extract.get_calories(recipe=plate)
