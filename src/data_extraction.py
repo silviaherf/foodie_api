@@ -33,11 +33,10 @@ def get_venue_foursquare(food='food',price=[1,2]):
     
     
     params={'ll':location,
-    'radious':2,
+    'radius':500,
     'query':food,
     'limit':5,
     'sortByDistance':1,
-    'sortByPopularity':1,
     'price':price,
     'client_id':api_user,
     'client_secret':api_key,
@@ -76,11 +75,10 @@ def get_venue_foursquare_near(place,food='food',price=[1,2]):
   
     params={
     'near':place,
-    'radious':2,
+    'radius':500,
     'query':food,
     'limit':5,
     'sortByDistance':1,
-    'sortByPopularity':1,
     'price':price,
     'client_id':api_user,
     'client_secret':api_key,

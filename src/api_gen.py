@@ -90,8 +90,9 @@ def return_restaurants():
         
         
         map = extract.generate_map(res=res,place=location)._repr_html_()
+        #return open('src/html/restaurants.html').read().format(mapa=map)
      
-        return open('src/html/restaurants.html').read().format(mapa=map)
+        return map
 
 
 @app.route("/search/results/error")
@@ -99,7 +100,7 @@ def return_restaurants():
     #It returns a warning in case your query did not find any restaurant
 
 def warning():
-    warning = open('src/warning.html', 'r', encoding='utf-8').read() 
+    warning = open('src/html/warning.html', 'r', encoding='utf-8').read() 
     return warning
 
 
