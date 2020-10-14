@@ -21,6 +21,7 @@ from translate import Translator
 app = Flask("foodie")
 
 
+
 @app.route("/")
 
     #This is just the first view of the API
@@ -103,12 +104,8 @@ def return_restaurants():
     else:
         extract.generate_map(res=res,place=location)
         
-        #map = extract.generate_map(res=res,place=location)._repr_html_()
         return open('src/html/restaurants.html').read()
-        mapa=extract.generate_map(res=res,place=location)
-        #return render_template('restaurants.html',map=mapa)
-     
-        
+
 
 
 @app.route("/search/results/mapa")
@@ -118,10 +115,7 @@ def return_restaurants():
 def show_map():
     map = open('output/mapa.html', 'r', encoding='utf-8').read() 
     return map
-
-
-
-
+  
 
 @app.route("/search/results/error")
 

@@ -129,11 +129,10 @@ def generate_map(res,place):
     elif res.json()['response']['totalResults']>=5:
         for i in range(0,5):
             make_markers(res=res,map=m,i=i)
-        m.save('output/mapa.html')
+        m.save('./output/mapa.html')
     return m
 
-
-
+       
 def plate_recognition(image):
     """
     This function uses NN for image recognition
