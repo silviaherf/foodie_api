@@ -104,10 +104,11 @@ def return_restaurants():
         extract.generate_map(res=res,place=location)
         
         #map = extract.generate_map(res=res,place=location)._repr_html_()
-        #return open('src/html/restaurants.html').read()
-        return render_template('restaurants.html',mapa=extract.generate_map(res=res,place=location))
+        return open('src/html/restaurants.html').read()
+        mapa=extract.generate_map(res=res,place=location)
+        #return render_template('restaurants.html',map=mapa)
      
-        #return map
+        
 
 
 @app.route("/search/results/mapa")
@@ -191,17 +192,7 @@ def show_kcals():
     calories=extract.get_calories(recipe=recipe)
 
 
-    return render_template('calories.html',plate=recipe.lower(),calories=[calories.to_html(classes='data', header="true")])
+    return render_template('calories.html',plate=plate.lower(),calories=[calories.to_html(classes='data', header="true")])
    
 
-        
     
-"""
-@app.route("/calculate/results")
-def nutrition_facts():
-   
-    nutritional=open('src/html/calories.html', 'r', encoding='utf-8').read()
-
-    return nutritional
-
-"""
