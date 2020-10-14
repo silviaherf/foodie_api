@@ -94,14 +94,14 @@ def get_venue_foursquare_near(place,food='food',price=[1,2]):
     res = requests.get(url,params=params)
         
     data = res.json()
-    if res.status_code != 200:
+    if res.json()['meta']['code'] != 200:
         
-        raise ValueError(f'Invalid FourSquare API call: {res.status_code}')
+        print('¿Seguro que has escrito bien tu ubicación y lo que te apetece comer?')
         
     else:
         print(f"Requested data to {baseUrl}; status_code:{res.status_code}")
         
-        return res
+    return res
 
 
 def make_markers(res,map,i=0):

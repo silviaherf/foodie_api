@@ -64,11 +64,17 @@ def return_restaurants():
     if place:
         if price and food:
             res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
+            if res.json()['meta']['code'] != 200:
+                
+                return redirect("/search/results/error2")
 
 
         elif not food and price:
             res=extract.get_venue_foursquare_near(place=place,price=price)
 
+            if res.json()['meta']['code'] != 200:
+                
+                return redirect("/search/results/error2")
        
         locator = Nominatim(user_agent='myGeocoder')
         location=list(locator.geocode(place)[1])
@@ -76,12 +82,21 @@ def return_restaurants():
     else:
         if price and food:
             res=extract.get_venue_foursquare(food=food,price=price)
+            if res.json()['meta']['code'] != 200:
+                
+                return redirect("/search/results/error2")
 
         elif not food and price:
             res=extract.get_venue_foursquare(price=price)
+            if res.json()['meta']['code'] != 200:
+                
+                return redirect("/search/results/error2")
  
         g = geocoder.ip('me')
         location=g.latlng
+
+
+
 
     if res.json()['response']['totalResults']==0:
         return redirect("/search/results/error")
@@ -115,6 +130,13 @@ def warning():
     warning = open('src/html/warning.html', 'r', encoding='utf-8').read() 
     return warning
 
+@app.route("/search/results/error2")
+
+    #It returns a warning in case you status code of response is not 200
+
+def warning2():
+    warning2 = open('src/html/warning2.html', 'r', encoding='utf-8').read() 
+    return warning2
 
 
 @app.route("/upload")
