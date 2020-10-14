@@ -1,5 +1,7 @@
 import requests
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -15,6 +17,7 @@ import cv2
 from geopy.geocoders import Nominatim
 import cgi, cgitb
 import tensorflow as tf
+import dataframe_image as dfi
 
 
 def get_venue_foursquare(food='food',price=[1,2]):
@@ -52,7 +55,6 @@ def get_venue_foursquare(food='food',price=[1,2]):
 
     res = requests.get(url,params=params)
         
-    data = res.json()
     if res.status_code != 200:
         
         raise ValueError(f'Invalid FourSquare API call: {res.status_code}')
@@ -93,7 +95,6 @@ def get_venue_foursquare_near(place,food='food',price=[1,2]):
 
     res = requests.get(url,params=params)
         
-    data = res.json()
     if res.json()['meta']['code'] != 200:
         
         print('¿Seguro que has escrito bien tu ubicación y lo que te apetece comer?')
@@ -120,7 +121,7 @@ def generate_map(res,place):
     """
     This function creates a Folium map with the results from FourSquare API
     """
-    m = Map(location=place,zoom_start=15)
+    m = Map(location=place,zoom_start=16)
     if res.json()['response']['totalResults']>0 and res.json()['response']['totalResults']<5:
         for i in range(0,res.json()['response']['totalResults']):
             make_markers(res=res,map=m,i=i)
@@ -133,7 +134,7 @@ def generate_map(res,place):
 
 
 
-def class_recognition(image):
+def plate_recognition(image):
     """
     This function uses NN for image recognition
     """
@@ -142,18 +143,16 @@ def class_recognition(image):
     'spaghetti_bolognese': 2, 
     'sushi': 3, 
     'tacos': 4}
-
+    model = tf.keras.models.load_model('output/models/14_oct/InceptionV5_model.hdf5')
     img = cv2.imread(image)
     img2 = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
-    dim=(75,75)
+    img2=img2/255
+    dim=(256,256)
     image=cv2.resize(img2, dim,interpolation=cv2.INTER_AREA)
     image = np.expand_dims(image, axis=0) 
-
-    model = tf.keras.models.load_model('output/models/13_oct/InceptionV4_model.hdf5')
     pred = model.predict(image)
-    
     for k,v in clases.items():
-        if v==int(np.where(pred == 1)[1]):
+        if v==np.argmax(pred,axis=1):
             plate=k
     return plate
 
@@ -173,8 +172,6 @@ def get_calories(recipe='pizza'):
     'title':recipe,
    
     }
-
-    
     
     baseUrl=f'https://api.spoonacular.com/'
     endpoint='recipes/guessNutrition'
@@ -183,7 +180,6 @@ def get_calories(recipe='pizza'):
 
     res = requests.get(url,params=params)
         
-    data = res.json()
     if res.status_code != 200:
         
         raise ValueError(f'Invalid Spoonacular API call: {res.status_code}')
@@ -196,11 +192,44 @@ def get_calories(recipe='pizza'):
             print('No hay datos suficientes para esta búsqueda; por favor, prueba con algo menos específico')
 
         except: 
-            pass
+            df=create_calories_df(res=res,recipe=recipe)
+
+            return df
                   
-        return res
+        
 
 
+def create_calories_df(res,recipe):
+    cal=res.json()['calories']['value']
+    fat=res.json()['fat']['value']
+    protein=res.json()['protein']['value']
+    carbs=res.json()['carbs']['value']
+
+    nutrition={ 'Calorias':f'{cal} kcal',
+            'Grasa':f'{fat} g',
+            'Proteina':f'{protein} g',
+            'Carbohidratos':f'{carbs} g'
+        
+    }
+
+    df=pd.DataFrame.from_dict(nutrition,orient='index',columns=['Valores nutricionales por 100g'])
+
+    fig = plt.figure(figsize = (6, 5))
+    ax=plt.subplot(2,1,1)
+
+    ax.table(cellText = df.values,
+            rowLabels = df.index,
+            colLabels = df.columns,
+            loc = "best"
+            )
+    ax.set_title(f'{recipe}:')
+
+    ax.axis("off");
+
+    plt.savefig('src/downloads/calories.png')
+
+    return df
 
 
+    
 
