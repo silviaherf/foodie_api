@@ -104,8 +104,8 @@ def return_restaurants():
         extract.generate_map(res=res,place=location)
         
         #map = extract.generate_map(res=res,place=location)._repr_html_()
-        return open('src/html/restaurants.html').read()
-        #return render_template('restaurants.html',mapa=extract.generate_map(res=res,place=location))
+        #return open('src/html/restaurants.html').read()
+        return render_template('restaurants.html',mapa=extract.generate_map(res=res,place=location))
      
         #return map
 
@@ -181,10 +181,12 @@ def show_kcals():
         image='src/downloads/image.jpg'
         plate=extract.plate_recognition(image)
 
-     
-    translator= Translator(from_lang='es', to_lang="en")
-    recipe = translator.translate(plate)
+    if plate!='tacos' and plate!='sushi':
+        translator= Translator(from_lang='es', to_lang="en")
+        recipe = translator.translate(plate)
 
+    else:
+        recipe=plate
 
     calories=extract.get_calories(recipe=recipe)
 

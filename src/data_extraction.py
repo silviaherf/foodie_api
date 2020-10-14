@@ -138,9 +138,9 @@ def plate_recognition(image):
     """
     This function uses NN for image recognition
     """
-    clases={'hamburger': 0, 
+    clases={'hamburgesa': 0, 
     'pizza': 1, 
-    'spaghetti_bolognese': 2, 
+    'espaghetti bolonesa': 2, 
     'sushi': 3, 
     'tacos': 4}
     model = tf.keras.models.load_model('output/models/14_oct/InceptionV5_model.hdf5')
