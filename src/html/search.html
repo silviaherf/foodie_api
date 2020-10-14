@@ -11,13 +11,13 @@
     <style>
         body { 
           background-image: url("https://mk0madklubben208sy3o.kinstacdn.com/wp-content/uploads/2020/07/restaurant_hero_FCKbh.jpg");
-          background-color: rgba(255, 255, 255, 0.5);
+          background-color: rgba(255, 255, 255, 0.4);
         background-blend-mode: overlay;
           background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: 100% 100%;
 
-          text-align: center;margin-top: 300px;
+          text-align: center;margin-top: 50px;
         }
 
         WebContainer{
@@ -26,29 +26,75 @@
                 height:auto;
             } 
 
-            
         </style>
+       
 
-    <form method="post" action="/search/results">
-        <h2>¿Qué quieres comer hoy?</h2>
-        <input name="food" type="text" />
-        <h2>¿En qué zona?</h2>
-        <input name="place" type="text" />
-        <h2>¿En qué rango de precio?</h2>
-        <input list="price" type="text" name="price" />
-        <datalist id="price">
-            <option value="€">
-            <option value="€€">
-            <option value="€€€">
-            <option value="€€€€">
-        </datalist>
 
-        <p>
-            </h2>
-            <input type="submit" name="¡A comer!"/>
-        </p>
+<table style="width:85%; height:800px ; border-collapse:collapse; font:14px Arial,sans-serif; ">
 
-    </form>
-</body>
+  <tr>
+    
+    <td style="width:20%; padding:20px; background-color:rgba(255, 255, 255, 0.4); vertical-align: center ;text-align:left; ">
+
+
+          <h1 style="font-size:24px;"></h1>
+          <h2><b><code>Índice:</b></code></h2>
+          <h3><code>
+            <a href="../"> Home</a> 
+
+          </code></h3>
+
+          <h3><code>
+              
+             <a href="../search"> Recomendador restaurantes</a>  
+            
+          
+          </code></h3>
+
+          <h3><code>
+              
+               <a href="../upload"> Calculadora de calorías</a> 
+              
+            
+            </code></h3>
+          
+          <p>
+              <h3><b><code>¡Que aproveche!</b></code></h3>
+  
+          </p>
+
+          </td>
+        <td style="padding:20px; vertical-align:center;  text-align: center ; width: 10px;">  
+
+          <body>
+            
+
+            <form method="post" action="/search/results">
+                <h2>¿Qué quieres comer hoy?</h2>
+                <input name="food" type="text" />
+                <h2>¿En qué zona?</h2>
+                <input name="place" type="text" />
+                <h2>¿En qué rango de precio?</h2>
+                <input list="price" type="text" name="price" />
+                <datalist id="price">
+                    <option value="€">
+                    <option value="€€">
+                    <option value="€€€">
+                    <option value="€€€€">
+                </datalist>
+        
+                <p>
+                    </h2>
+                    <input type="submit" name="¡A comer!"/>
+                </p>
+        
+            </form>
+        </body>
+
+
+</td>
+</tr>
+</table>
+
 
 </html>
