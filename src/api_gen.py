@@ -24,14 +24,14 @@ app = Flask("foodie")
     #This is just the first view of the API
    
 def saludo():
-    cover = open('src/html/cover.html', 'r', encoding='utf-8').read() 
+    cover = open('src/templates/cover.html', 'r', encoding='utf-8').read() 
     return cover
 
 
 @app.route("/search")
 
 def ask_restaurant():
-    search = open('src/html/search.html', 'r', encoding='utf-8').read() 
+    search = open('src/templates/search.html', 'r', encoding='utf-8').read() 
     return search
 
 
@@ -90,7 +90,7 @@ def return_restaurants():
         extract.generate_map(res=res,place=location)
         
         #map = extract.generate_map(res=res,place=location)._repr_html_()
-        return open('src/html/restaurants.html').read()
+        return open('src/templates/restaurants.html').read()
      
         #return map
 
@@ -112,14 +112,14 @@ def show_map():
     #It returns a warning in case your query did not find any restaurant
 
 def warning():
-    warning = open('src/html/warning.html', 'r', encoding='utf-8').read() 
+    warning = open('src/templates/warning.html', 'r', encoding='utf-8').read() 
     return warning
 
 
 
 @app.route("/upload")
 def upload_image():
-    upload = open('src/html/upload_plate.html', 'r', encoding='utf-8').read() 
+    upload = open('src/templates/upload_plate.html', 'r', encoding='utf-8').read() 
     return upload
 
 
@@ -147,15 +147,18 @@ def show_kcals():
 
     calories=extract.get_calories(recipe=translator)
 
-    #calculator= open('src/html/calories.html', 'r', encoding='utf-8').read().format(p=calories,c=calories) 
-
-    return render_template('index.html', plate=plate,calories=calories)
-    
+    calculator= open('src/templates/calories.html', 'r', encoding='utf-8').format(plate=plate,calories=calories) 
     
 
+    return calculator
+    
+    
+"""
 @app.route("/calculate/results")
 def nutrition_facts():
    
-    nutritional=open('src/html/calories.html', 'r', encoding='utf-8').read()
+    nutritional=open('src/templates/calories.html', 'r', encoding='utf-8').read()
 
     return nutritional
+
+"""
