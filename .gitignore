@@ -132,4 +132,11 @@ dmypy.json
 .ipynb
 .xml
 /Dismissed
+/input
+notas
+src/mapa.ipynb
+src/pruebas.ipynb
+zz_trash/
+
+
 
