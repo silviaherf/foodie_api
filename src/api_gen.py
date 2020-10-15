@@ -15,7 +15,6 @@ from geopy.geocoders import Nominatim
 import geocoder
 import urllib.request
 from translate import Translator
-from werkzeug.utils import secure_filename
 from PIL import Image  
 
 
@@ -116,8 +115,9 @@ def return_restaurants():
 
     else:
         extract.generate_map(res=res,place=location)
-        
+
         return open('src/html/restaurants.html').read()
+    
 
 
 

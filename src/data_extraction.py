@@ -16,7 +16,7 @@ import cv2
 from geopy.geocoders import Nominatim
 import cgi, cgitb
 import tensorflow as tf
-import dataframe_image as dfi
+from translate import Translator
 
 
 def get_venue_foursquare(food='food',price=[1,2]):
@@ -110,9 +110,12 @@ def make_markers(res,map,i=0):
     """
     name=res.json()['response']['groups'][0]['items'][i]['venue']['name']
     address=res.json()['response']['groups'][0]['items'][i]['venue']['location']['formattedAddress'][0]
+    tipo=res.json()['response']['groups'][0]['items'][i]['venue']['categories'][0]['name']
+    translator= Translator(from_lang='en', to_lang="es")
+    tipo= translator.translate(tipo)
     lat=res.json()['response']['groups'][0]['items'][i]['venue']['location']['labeledLatLngs'][0]['lat']
     long=res.json()['response']['groups'][0]['items'][i]['venue']['location']['labeledLatLngs'][0]['lng']
-    chincheta = Marker(location=[lat,long], tooltip=name)
+    chincheta = Marker(location=[lat,long], tooltip=name, popup=address, icon=Icon(color='blue',icon='cutlery', prefix='glyphicon'))
     chincheta.add_to(map)
 
 
@@ -131,7 +134,7 @@ def generate_map(res,place):
         m.save('./output/mapa.html')
     return m
 
-       
+
 def plate_recognition(image):
     """
     This function uses NN for image recognition
