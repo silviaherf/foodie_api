@@ -84,8 +84,13 @@ def return_restaurants():
                 return redirect("/search/results/error2")
        
         locator = Nominatim(user_agent='myGeocoder')
-        location=list(locator.geocode(place)[1])
-
+        
+        try:
+            lat=res.json()['response']['groups'][0]['items'][0]['venue']['location']['labeledLatLngs'][0]['lat']
+            long=res.json()['response']['groups'][0]['items'][0]['venue']['location']['labeledLatLngs'][0]['lng']
+            location=[lat,long]
+        except:
+            location=list(locator.geocode(place)[1])
     else:
         if price and food:
             if price>=2:
