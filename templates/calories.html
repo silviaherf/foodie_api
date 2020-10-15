@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html style="font-family: sans-serif;">
+  <head>
+    <meta charset="utf-8">
+    <title>Silviaherf's Foodie API</title>
+    <link rel="icon"type="image/png" href="/static/icon.jpg">
+
+
+    </head>
+    <style>
+      body { 
+        background-image: url("static/fondo.jpg");
+        background-color: rgba(255, 255, 255, 0.4);
+      background-blend-mode: overlay;
+        background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100% 100%;
+
+      text-align: center;margin-top: 50px;
+      }
+
+
+      WebContainer{
+              width:100%;
+              min-width:1000px;
+              height:auto;
+          } 
+
+          
+      </style>
+
+<table style="width:85%; height:800px ; border-collapse:collapse; font:14px Arial,sans-serif; ">
+
+  <tr>
+    
+    <td rowspan=4 style="width:20%; padding:20px; height:400px; background-color:rgba(255, 255, 255, 0.4); vertical-align: center ;text-align:left; ">
+      
+      
+                <h1 style="font-size:24px;"></h1>
+                  <h2><b><code>Índice:</b></code></h2>
+                  <h3><code>
+                    <a href="../"> Home</a> 
+    
+                  </code></h3>
+    
+                  <h3><code>
+                      
+                     <a href="../search"> Recomendador restaurantes</a>  
+                    
+                  
+                  </code></h3>
+      
+                  <h3><code>
+                      
+                       <a href="../upload"> Calculadora de calorías</a> 
+                      
+                    
+                    </code></h3>
+                  
+                  <p>
+                      <h3><b><code>¡Que aproveche!</b></code></h3>
+          
+                  </p>
+    
+               
+    
+    
+                  <body> 
+            <td colspan=3 style="padding:20px; vertical-align:bottom; text-align: center ">  
+      
+              <h1><code>Los valores nutricionales de tu plato de {{plate}} son los siguientes: </code></h1>
+
+            </td>
+
+
+              <tr  style=   "text-align: center; vertical-align:top;   ">                
+                <td rowspan=2 style="width:230px;"></td>
+              
+              <code><td style="width:180px;  height:150px; text-align: center; font:20px Arial,sans-serif;
+                background-color:rgba(255, 255, 255, 0.4); ">
+                {% for table in calories %}
+                 
+                {{ table|safe }}
+                  
+                  {% endfor %}
+      
+               
+                </td></code>
+                <tr style=  " text-align: center; vertical-align:top;   "> 
+                <td  ></td> 
+
+                  
+                <td rowspan=2 style="width:200px ;"></td>
+            </tr>
+
+              </body> 
+    
+    
+  
+    
+    </table>
+        
+        </html>
+
+    
