@@ -15,11 +15,13 @@ from geopy.geocoders import Nominatim
 import geocoder
 import urllib.request
 from translate import Translator
+from werkzeug.utils import secure_filename
+from PIL import Image  
+
 
 
 
 app = Flask("foodie")
-
 
 
 @app.route("/")
@@ -139,54 +141,51 @@ def upload_image():
     upload = open('src/html/upload_plate.html', 'r', encoding='utf-8').read() 
     return upload
 
-"""
-@app.route('/api/test', methods=['POST'])
-def test():
-    r = request
-    # convert string of image data to uint8
-    nparr = np.fromstring(r.data, np.uint8)
-    # decode image
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+@app.route("/search/results/error3")
+  #It returns a warning in case you don't upload any image neither insert url
+def warning3():
+    warning3 = open('src/html/warning3.html', 'r', encoding='utf-8').read() 
+    return warning3
 
-    # do some fancy processing here....
+@app.route("/search/results/error4")
+  #It returns a warning in case you don't upload any image neither insert url
+def warning4():
+    warning4= open('src/html/warning4.html', 'r', encoding='utf-8').read() 
+    return warning4
 
-    # build a response dict to send back to client
-    response = {'message': 'image received. size={}x{}'.format(img.shape[1], img.shape[0])
-                }
-    # encode response using jsonpickle
-    response_pickled = jsonpickle.encode(response)
-
-    return Response(response=response_pickled, status=200, mimetype="application/json")
-
-"""
 
 @app.route("/calculate",methods=['GET','POST'])
 def show_kcals():
+    
     if request.method=='POST':
-        image = request.form.get('image')
+        image = request.files['image']
         url = request.form.get('url')
+        if image:
+            image.save('src/downloads/image.jpg')
+            image='src/downloads/image.jpg'
+            plate=extract.plate_recognition(image)
 
-    if image:
-
-        plate=extract.plate_recognition(image)
+        elif url:
+            if extract.allowed_file(url):
+                urllib.request.urlretrieve(url, 'src/downloads/image.jpg')
+                image='src/downloads/image.jpg'
+                plate=extract.plate_recognition(image)
+            else:
+                return redirect('/search/results/error4')
     
-    elif url:
+        else:
+            
+            return redirect('/search/results/error3')
 
-        urllib.request.urlretrieve(url, 'src/downloads/image.jpg')
-        image='src/downloads/image.jpg'
-        plate=extract.plate_recognition(image)
+        if plate!='tacos' and plate!='sushi':
+            translator= Translator(from_lang='es', to_lang="en")
+            recipe = translator.translate(plate)
 
-    if plate!='tacos' and plate!='sushi':
-        translator= Translator(from_lang='es', to_lang="en")
-        recipe = translator.translate(plate)
+        else:
+            recipe=plate
 
-    else:
-        recipe=plate
-
-    calories=extract.get_calories(recipe=recipe)
+        calories=extract.get_calories(recipe=recipe)
 
 
-    return render_template('calories.html',plate=plate.lower(),calories=[calories.to_html(classes='data', header="true")])
-   
+        return render_template('calories.html',plate=plate.lower(),calories=[calories.to_html(classes='data', header="true")])
 
-    
