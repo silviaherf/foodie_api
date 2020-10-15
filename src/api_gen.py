@@ -187,9 +187,12 @@ def show_kcals():
 
         elif url:
             if extract.allowed_file(url):
-                urllib.request.urlretrieve(url, 'src/downloads/image.jpg')
-                image='src/downloads/image.jpg'
-                plate=extract.plate_recognition(image)
+                try:
+                    urllib.request.urlretrieve(url, 'src/downloads/image.jpg')
+                    image='src/downloads/image.jpg'
+                    plate=extract.plate_recognition(image)
+                except:
+                    return redirect('/search/results/error5')
             else:
                 return redirect('/search/results/error4')
     
@@ -209,3 +212,8 @@ def show_kcals():
 
         return render_template('calories.html',plate=plate.lower(),calories=[calories.to_html(classes='data', header="true")])
 
+@app.route("/search/results/error5")
+  #It returns a warning in case you don't upload any image neither insert url
+def warning5():
+    warning5= open('src/html/warning5.html', 'r', encoding='utf-8').read() 
+    return warning5
