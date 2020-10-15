@@ -55,7 +55,10 @@ def return_restaurants():
         food = request.form.get('food')
         price_post = request.form.get('price')
         if price_post:
-            price=prices[price_post]
+            if price_post in prices.keys():
+                price=prices[price_post]
+            else:
+                return redirect("/search/results/error2")
         else:
             price=2
 
@@ -68,14 +71,16 @@ def return_restaurants():
        
     if place:
         if price and food:
-            res=extract.get_venue_foursquare_near(place=place,food=food,price=price)
-
+            if price>=2:
+                res=extract.get_venue_foursquare_near(place=place,food=food,price=f'{price},{price-1}')
+            else:
+                res=extract.get_venue_foursquare_near(place=place,food=food,price=f'{price},{price+1}')
             if res.json()['meta']['code'] != 200:
                 return redirect("/search/results/error2")
 
 
         elif not food and price:
-            res=extract.get_venue_foursquare_near(place=place,price=price)
+            res=extract.get_venue_foursquare_near(place=place,price=f'{price},{price-1}')
 
             if res.json()['meta']['code'] != 200:
                 return redirect("/search/results/error2")
@@ -85,13 +90,19 @@ def return_restaurants():
 
     else:
         if price and food:
-            res=extract.get_venue_foursquare(food=food,price=price)
+            if price>=2:
+                res=extract.get_venue_foursquare(food=food,price=f'{price},{price-1}')
+            else:
+                res=extract.get_venue_foursquare(food=food,price=f'{price},{price+1}')   
 
             if res.json()['meta']['code'] != 200:
                 return redirect("/search/results/error2")
 
         elif not food and price:
-            res=extract.get_venue_foursquare(price=price)
+            if price>=2:
+                res=extract.get_venue_foursquare(price=f'{price},{price-1}')
+            else:
+                res=extract.get_venue_foursquare(price=f'{price},{price-1}')
 
             if res.json()['meta']['code'] != 200:
                 return redirect("/search/results/error2")

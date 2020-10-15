@@ -7,8 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from datetime import date
 import geocoder
-from folium import Map, Marker, Icon, FeatureGroup, LayerControl, Choropleth
-import branca
+from folium import Map, Marker, Icon, FeatureGroup, LayerControl
 from folium.plugins import HeatMap
 from tempfile import NamedTemporaryFile
 import webbrowser
@@ -121,7 +120,7 @@ def generate_map(res,place):
     """
     This function creates a Folium map with the results from FourSquare API
     """
-    m = Map(location=place,zoom_start=16)
+    m = Map(location=place,zoom_start=15)
     if res.json()['response']['totalResults']>0 and res.json()['response']['totalResults']<5:
         for i in range(0,res.json()['response']['totalResults']):
             make_markers(res=res,map=m,i=i)
@@ -139,7 +138,7 @@ def plate_recognition(image):
     """
     clases={'hamburgesa': 0, 
     'pizza': 1, 
-    'espaghetti bolonesa': 2, 
+    'espagheti boloñesa': 2, 
     'sushi': 3, 
     'tacos': 4}
     model = tf.keras.models.load_model('output/models/14_oct/InceptionV5_model.hdf5')
@@ -198,9 +197,16 @@ def get_calories(recipe='pizza'):
         
 def allowed_file(filename):
     
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
     return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS  
+        filename.rsplit('.', 1)[1].lower() in allowed_extensions 
+
+
+def similar(a, b):
+    """
+    This function matches from 0 to 1 the similarity of two strings. The parameters it needs are those two strings.
+    """
+    return SequenceMatcher(None, a, b).ratio() 
 
 def create_calories_df(res,recipe):
     cal=res.json()['calories']['value']
