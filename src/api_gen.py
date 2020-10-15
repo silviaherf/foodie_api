@@ -161,9 +161,14 @@ def show_kcals():
         image = request.files['image']
         url = request.form.get('url')
         if image:
-            image.save('src/downloads/image.jpg')
-            image='src/downloads/image.jpg'
-            plate=extract.plate_recognition(image)
+            if extract.allowed_file(image.filename):
+                image.save('src/downloads/image.jpg')
+                image='src/downloads/image.jpg'
+                plate=extract.plate_recognition(image)
+                
+            else:
+                
+                return redirect('/search/results/error4')
 
         elif url:
             if extract.allowed_file(url):
