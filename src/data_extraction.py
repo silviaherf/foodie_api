@@ -137,7 +137,7 @@ def plate_recognition(image):
     """
     This function uses NN for image recognition
     """
-    clases={'hamburguesa': 0, 
+    clases={'hamburgesa': 0, 
     'pizza': 1, 
     'espagheti boloñesa': 2, 
     'sushi': 3, 
