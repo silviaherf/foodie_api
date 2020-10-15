@@ -8,7 +8,6 @@ import numpy as np
 import cv2
 import src.data_extraction as extract
 import json
-from bson.json_util import dumps
 import base64
 import webbrowser
 from geopy.geocoders import Nominatim

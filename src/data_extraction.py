@@ -9,12 +9,10 @@ from datetime import date
 import geocoder
 from folium import Map, Marker, Icon, FeatureGroup, LayerControl
 from folium.plugins import HeatMap
-from tempfile import NamedTemporaryFile
 import webbrowser
 import glob
 import cv2
 from geopy.geocoders import Nominatim
-import cgi, cgitb
 import tensorflow as tf
 from translate import Translator
 
@@ -205,12 +203,6 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in allowed_extensions 
 
 
-def similar(a, b):
-    """
-    This function matches from 0 to 1 the similarity of two strings. The parameters it needs are those two strings.
-    """
-    return SequenceMatcher(None, a, b).ratio() 
-
 def create_calories_df(res,recipe):
     cal=res.json()['calories']['value']
     fat=res.json()['fat']['value']
@@ -225,20 +217,6 @@ def create_calories_df(res,recipe):
     }
 
     df=pd.DataFrame.from_dict(nutrition,orient='index',columns=['Valores nutricionales por 100g'])
-
-    fig = plt.figure(figsize = (6, 5))
-    ax=plt.subplot(2,1,1)
-
-    ax.table(cellText = df.values,
-            rowLabels = df.index,
-            colLabels = df.columns,
-            loc = "best"
-            )
-    ax.set_title(f'{recipe}:')
-
-    ax.axis("off");
-
-    plt.savefig('src/downloads/calories.png')
 
     return df
 
