@@ -8,7 +8,7 @@ This API aims to be both a restaurant recommender and a calories calculator. Thi
 
 The final deployment can be found in the following link:
 
-
+https://apifoodie.herokuapp.com/
 
 The script is developed in Python and deployed as a Docker image on Heroku.
 
