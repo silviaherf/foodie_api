@@ -64,7 +64,22 @@ It also calculates the nutritional information for any recipe, which will be use
 
 ## Project development
 
-In progress!!!
+As this project has two main components, the restaurant recommender and the calories calculator, both tasks were built in paralell. The clue here was the use of Google Colab, as training the ML models in the cloud gave me the opportunity to develop the endpoints of my API whilst the NN were working "by their own".
+
+So, as far as the restaurants recommender is concerned:
+
+- It decided to display a Folium map by making a request to Foursquare's API in real time. This way, I avoided saving a huge dataset in a database as MongoDB, and I opened the access to the recommender worldwide. Otherwise, it would have been immeasurable to do it.
+
+- For each request, a Folium map is created in the location specified by the user. In case a location is not defined, the IP address's location is considerated. Furthermore, 5 markers are drawn in the map, with up to the 5 nearest matches.
+
+- Defensive programming is also beared in mind, in case the location is not written properly, the query did not return any restaurant and so on.
+
+In terms of calories calculator:
+
+- ***In progress***
+
+
+As last, an image is created by means of Docker, and the final deployment is developed on Heroku.
 
 
 ## Conclusions
