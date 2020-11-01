@@ -85,11 +85,11 @@ An early stopping has been set for the case that the validation loss function in
 As a result, the following values have been obtained for both loss function and accuracy:
 
 
-![plot](output/Graphs_5classes/InceptionV5_5.png)
+![plot](./output/Graphs_5classes/InceptionV5_5.png)
 
 Where the confusion matrix looks as follows:
 
-![conf_matrix](output/Graphs_5classes/confV5_5.png)
+![conf_matrix](./output/Graphs_5classes/confV5_5.png)
 
 
 As last, an image is created by means of Docker, and the final deployment is developed on Heroku.
