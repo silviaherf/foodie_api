@@ -68,7 +68,7 @@ As this project has two main components, the restaurant recommender and the calo
 
 So, as far as the restaurants recommender is concerned:
 
-- It decided to display a Folium map by making a request to Foursquare's API in real time. This way, I avoided saving a huge dataset in a database as MongoDB, and I opened the access to the recommender worldwide. Otherwise, it would have been immeasurable to do it.
+- I decided to display a Folium map by making a request to Foursquare's API in real time. This way, I avoided saving a huge dataset in a database as MongoDB, and I opened the access to the recommender worldwide. Otherwise, it would have been immeasurable to do it.
 
 - For each request, a Folium map is created in the location specified by the user. In case a location is not defined, the IP address's location is considerated. Furthermore, 5 markers are drawn in the map, with up to the 5 nearest matches.
 
@@ -76,7 +76,20 @@ So, as far as the restaurants recommender is concerned:
 
 In terms of calories calculator:
 
-- ***In progress***
+-The main task here is to train an image classification neural net for 5 labels (i.e. sushi, pizza, tacos, spaguetti bolognese and burger). Each label is trained with 1000 images. In this case, InceptionV3 model has been used with 14 epochs, adding afterwars a GlobalAveragePooling2D layer, a Dense layer and a Dropout layer of 70% to ensure dismission for non-representative photos.
+
+The model training has been developed in Google Colab, so as to take advantage of their GPU possibilities.
+
+An early stopping has been set for the case that the validation loss function increases during 5 epochs. The selected loss function is the categorical crossentropy.
+
+As a result, the following values have been obtained for both loss function and accuracy:
+
+
+![plot](output/Graphs_5classes/InceptionV5_5.png)
+
+Where the confusion matrix looks as follows:
+
+![conf_matrix](output/Graphs_5classes/confV5_5.png)
 
 
 As last, an image is created by means of Docker, and the final deployment is developed on Heroku.
